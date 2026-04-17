@@ -1,0 +1,35 @@
+// config.js.template — copy to config.js and paste your Spotify Client ID.
+// config.js is gitignored; never commit your real Client ID.
+
+window.CONFIG = {
+  // From https://developer.spotify.com/dashboard (Settings → Basic Information)
+  SPOTIFY_CLIENT_ID: 'PASTE_CLIENT_ID_HERE',
+
+  // PKCE redirects. Must exactly match what you registered on the Spotify app.
+  // The app picks the right one automatically based on window.location.
+  REDIRECT_URIS: {
+    prod: 'https://evergavelis-sys.github.io/evers-radio/',
+    local: 'http://127.0.0.1:8000/'
+  },
+
+  // Scopes needed to read what's currently playing.
+  SCOPES: [
+    'user-read-currently-playing',
+    'user-read-playback-state'
+  ],
+
+  // Poll cadence (ms). Spotify rate-limits ~180 req/min per user token.
+  POLL_CURRENTLY_PLAYING_MS: 3000,
+  LOCAL_INTERP_TICK_MS: 100,
+
+  // Visualizer behavior toggles — can be flipped at runtime via the toggle bar.
+  CYCLE_ON_TRACK_CHANGE: true,
+  CYCLE_ON_SECTION_BOUNDARY: true,
+  AUTO_CYCLE_FALLBACK_MS: 60000,
+
+  // Album-art card initial mode: 'intro' | 'always' | 'faded' | 'off'
+  ALBUM_ART_MODE: 'intro',
+  ALBUM_ART_INTRO_HOLD_MS: 8000,
+  ALBUM_ART_FADE_IN_MS: 500,
+  ALBUM_ART_FADE_OUT_MS: 1500
+};

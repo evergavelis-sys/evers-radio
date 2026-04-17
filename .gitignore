@@ -1,0 +1,25 @@
+# Local secrets — Spotify Client ID lives here, never commit
+config.js
+
+# macOS noise
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*~
+.zed/
+
+# Node (in case we add a build step later)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Logs + tmp
+*.log
+tmp/
