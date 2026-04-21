@@ -539,3 +539,181 @@ html[data-mode="rave"]    { --er-accent: hsl(320, 70%, 70%); }
   .mode-toast { transition: opacity 80ms linear; transform: none !important; }
   .intro-overlay.visible .intro-card { transform: none; }
 }
+
+
+/* ============================================================
+   INTRO ANIMATION  (src/intro-animation.js)
+   ============================================================ */
+
+.intro-anim {
+  position: fixed;
+  inset: 0;
+  z-index: 9500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 900ms ease;
+  font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", sans-serif;
+  color: #fff;
+  -webkit-font-smoothing: antialiased;
+}
+.intro-anim.playing { opacity: 1; }
+.intro-anim.dissolving { opacity: 0; pointer-events: none; transition: opacity 900ms ease; }
+
+.intro-anim-backdrop {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at center, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.85) 100%);
+  backdrop-filter: blur(20px) saturate(120%);
+  -webkit-backdrop-filter: blur(20px) saturate(120%);
+}
+
+.intro-anim-stage {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  max-width: 560px;
+  padding: 20px;
+  text-align: center;
+}
+
+/* ---- Logo slot (placeholder "e" mark) ---- */
+.intro-anim-logo-slot {
+  opacity: 0;
+  transform: translateY(12px) scale(0.9);
+  transition: opacity 700ms ease, transform 900ms cubic-bezier(.2,.8,.2,1);
+}
+.intro-anim.stage-word .intro-anim-logo-slot,
+.intro-anim.show-all   .intro-anim-logo-slot {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.intro-anim-mark {
+  position: relative;
+  width: 68px;
+  height: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.intro-anim-mark-glyph {
+  font-family: "Times New Roman", Times, serif;
+  font-size: 54px;
+  font-style: italic;
+  font-weight: 300;
+  line-height: 1;
+  color: #fff;
+  letter-spacing: -0.04em;
+}
+.intro-anim-mark-ring {
+  position: absolute;
+  inset: 0;
+  border: 1.5px solid rgba(255,255,255,0.35);
+  border-radius: 50%;
+  animation: intro-mark-breathe 3s ease-in-out infinite;
+}
+@keyframes intro-mark-breathe {
+  0%,100% { transform: scale(1); opacity: 0.35; }
+  50%     { transform: scale(1.08); opacity: 0.7; }
+}
+
+/* ---- Wordmark (two words, staggered) ---- */
+.intro-anim-wordmark {
+  display: flex;
+  gap: 14px;
+  font-size: clamp(36px, 8vw, 64px);
+  font-weight: 200;
+  letter-spacing: 0.01em;
+  line-height: 1;
+}
+.intro-anim-word {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 700ms ease, transform 900ms cubic-bezier(.2,.8,.2,1);
+}
+.intro-anim-word:nth-child(2) { transition-delay: 120ms; }
+.intro-anim.stage-word .intro-anim-word,
+.intro-anim.show-all   .intro-anim-word { opacity: 1; transform: translateY(0); }
+
+/* ---- Tagline ---- */
+.intro-anim-tagline {
+  font-size: 14px;
+  letter-spacing: 0.04em;
+  color: rgba(255,255,255,0.6);
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 600ms ease, transform 600ms ease;
+}
+.intro-anim.stage-tag .intro-anim-tagline,
+.intro-anim.show-all  .intro-anim-tagline { opacity: 1; transform: translateY(0); }
+
+/* ---- Instructions (staggered via --i) ---- */
+.intro-anim-instructions {
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  max-width: 320px;
+}
+.intro-anim-instruction {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  padding: 8px 14px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 500ms ease, transform 500ms ease;
+  transition-delay: calc(var(--i) * 120ms);
+}
+.intro-anim.stage-instr .intro-anim-instruction,
+.intro-anim.show-all    .intro-anim-instruction { opacity: 1; transform: translateY(0); }
+.intro-anim-instr-key {
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(255,255,255,0.92);
+  letter-spacing: 0.02em;
+}
+.intro-anim-instr-sub {
+  font-size: 12px;
+  color: rgba(255,255,255,0.45);
+  letter-spacing: 0.02em;
+  font-style: italic;
+}
+
+/* ---- Skip hint ---- */
+.intro-anim-skip {
+  margin-top: 22px;
+  font-size: 10px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.28);
+  opacity: 0;
+  transition: opacity 700ms ease 1800ms; /* fades in late */
+}
+.intro-anim.playing .intro-anim-skip,
+.intro-anim.show-all .intro-anim-skip { opacity: 1; }
+
+/* ---- Reduced motion ---- */
+@media (prefers-reduced-motion: reduce) {
+  .intro-anim-logo-slot,
+  .intro-anim-word,
+  .intro-anim-tagline,
+  .intro-anim-instruction {
+    transition: opacity 180ms linear !important;
+    transform: none !important;
+  }
+  .intro-anim-mark-ring { animation: none; opacity: 0.4; }
+}
