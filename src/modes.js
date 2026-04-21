@@ -125,6 +125,7 @@
          currentId = id;
          persist(id);
          broadcast();
+         flashToast();
    }
 
    function cycle(dir = 1) {
@@ -152,7 +153,6 @@
          if (e.key === 'm' || e.key === 'M') {
                  e.preventDefault();
                  cycle(e.shiftKey ? -1 : 1);
-                 flashToast();
          }
    });
 
