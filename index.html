@@ -1,71 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="color-scheme" content="dark">
-  <title>Ever's Radio</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="dark">
+    <title>Ever's Radio</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Fullscreen visualizer canvas -->
-  <canvas id="butterchurn-canvas"></canvas>
+    <!-- Fullscreen visualizer canvas -->
+    <canvas id="butterchurn-canvas"></canvas>
 
-  <!-- Auth landing (shown when no token) -->
-  <div id="auth-gate" class="hidden">
-    <div class="auth-card">
-      <h1>ever's radio</h1>
-      <p>sign in with spotify to drive the visuals.</p>
-      <button id="authorize-btn">authorize spotify</button>
-      <p class="auth-note">uses PKCE — no secret in the browser, no server.</p>
+    <!-- Auth landing (shown when no token) -->
+    <div id="auth-gate" class="hidden">
+        <div class="auth-card">
+            <h1>ever's radio</h1>
+            <p>sign in with spotify to drive the visuals.</p>
+            <button id="authorize-btn">authorize spotify</button>
+            <p class="auth-note">uses PKCE — no secret in the browser, no server.</p>
+        </div>
     </div>
-  </div>
 
-  <!-- Album art card (bottom-left) -->
-  <div id="album-card" class="album-card hidden">
-    <div class="album-art-wrap">
-      <img id="album-art" alt="" />
+    <!-- Album art card -->
+    <div id="album-card" class="album-card hidden" tabindex="0" role="group" aria-label="Album art (draggable)">
+        <div class="album-art-wrap">
+            <img id="album-art" alt="" />
+        </div>
+        <div class="track-meta">
+            <div id="track-title" class="track-title"></div>
+            <div id="track-artist" class="track-artist"></div>
+            <div id="track-album" class="track-album"></div>
+        </div>
+        <div class="card-resize-handle" aria-hidden="true" title="Drag to resize · scroll to resize"></div>
     </div>
-    <div class="track-meta">
-      <div id="track-title" class="track-title"></div>
-      <div id="track-artist" class="track-artist"></div>
-      <div id="track-album" class="track-album"></div>
+
+    <!-- Toggle bar (top-right, auto-hide) -->
+    <div id="toggle-bar" class="toggle-bar hidden">
+        <button id="btn-art-mode" title="Album art mode (A)">art: intro</button>
+        <div class="divider"></div>
+        <button id="btn-prev" title="Previous preset (P / ←)">⟵</button>
+        <button id="btn-random" title="Random preset (R)">🔀</button>
+        <button id="btn-next" title="Next preset (N / →)">⟶</button>
+        <button id="btn-lock" title="Lock current preset (L)">🔒</button>
+        <div class="divider"></div>
+        <button id="btn-cycle-track" class="pill active" title="Cycle on track change">track</button>
+        <button id="btn-cycle-section" class="pill active" title="Cycle on section boundary">section</button>
+        <button id="btn-cycle-auto" class="pill active" title="Auto-cycle after 60s">60s</button>
+        <div class="divider"></div>
+        <button id="btn-mode" title="Cycle mode (M)">mode: ambient</button>
+        <button id="btn-help" title="Help (?)">?</button>
+        <div class="divider"></div>
+        <button id="btn-fullscreen" title="Fullscreen (F)">⛶</button>
+        <button id="btn-reauth" class="reauth" title="Re-auth Spotify">⚙</button>
     </div>
-  </div>
 
-  <!-- Toggle bar (top-right, auto-hide) -->
-  <div id="toggle-bar" class="toggle-bar hidden">
-    <button id="btn-art-mode" title="Album art mode (A)">art: intro</button>
-    <div class="divider"></div>
-    <button id="btn-prev" title="Previous preset (P / ←)">⟵</button>
-    <button id="btn-random" title="Random preset (R)">🔀</button>
-    <button id="btn-next" title="Next preset (N / →)">⟶</button>
-    <button id="btn-lock" title="Lock current preset (L)">🔒</button>
-    <div class="divider"></div>
-    <button id="btn-cycle-track" class="pill active" title="Cycle on track change">track</button>
-    <button id="btn-cycle-section" class="pill active" title="Cycle on section boundary">section</button>
-    <button id="btn-cycle-auto" class="pill active" title="Auto-cycle after 60s">60s</button>
-    <div class="divider"></div>
-    <button id="btn-fullscreen" title="Fullscreen (F)">⛶</button>
-    <button id="btn-reauth" class="reauth" title="Re-auth Spotify">⚙</button>
-  </div>
+    <!-- Status strip (errors, rate-limit notices) -->
+    <div id="status-strip" class="status-strip hidden"></div>
 
-  <!-- Status strip (errors, rate-limit notices) -->
-  <div id="status-strip" class="status-strip hidden"></div>
+    <!-- Config -->
+    <script src="config.js"></script>
 
-  <!-- Config (gitignored — copy from config.js.template) -->
-  <script src="config.js"></script>
+    <!-- Butterchurn via CDN, no build step -->
+    <script src="https://unpkg.com/butterchurn@2.6.7/lib/butterchurn.min.js"></script>
+    <script src="https://unpkg.com/butterchurn-presets@2.4.7/lib/butterchurnPresets.min.js"></script>
 
-  <!-- Butterchurn via CDN, no build step -->
-  <script src="https://unpkg.com/butterchurn@2.6.7/lib/butterchurn.min.js"></script>
-  <script src="https://unpkg.com/butterchurn-presets@2.4.7/lib/butterchurnPresets.min.js"></script>
-
-  <!-- App modules (plain scripts, order matters) -->
-  <script src="src/color-extractor.js"></script>
-  <script src="src/spotify.js"></script>
-  <script src="src/visualizer.js"></script>
-  <script src="src/ui.js"></script>
-  <script src="src/card-physics.js"></script>
-  <script src="src/app.js"></script>
+    <!-- App modules (plain scripts, order matters) -->
+    <script src="src/modes.js"></script>
+    <script src="src/color-extractor.js"></script>
+    <script src="src/spotify.js"></script>
+    <script src="src/visualizer.js"></script>
+    <script src="src/ui.js"></script>
+    <script src="src/card-physics.js"></script>
+    <script src="src/startup-popup.js"></script>
+    <script src="src/app.js"></script>
 </body>
 </html>
