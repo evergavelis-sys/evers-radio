@@ -141,6 +141,18 @@
       // Place the card at its anchor on first load.
       snapToAnchor(false);
 
+       // Re-snap to anchor when the card transitions from hidden -> visible,
+       // because getBoundingClientRect returns 0x0 while display:none, so the
+       // initial snapToAnchor() has no real dimensions to work with.
+       const visObserver = new MutationObserver(() => {
+             if (state.el.classList.contains('visible') && !state.el.classList.contains('hidden')) {
+                     // Defer one frame so layout finishes first.
+                     requestAnimationFrame(() => snapToAnchor(false));
+             }
+       });
+       visObserver.observe(state.el, { attributes: true, attributeFilter: ['class'] });
+       
+
       loop(performance.now());
    }
 
