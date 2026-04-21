@@ -305,3 +305,237 @@ body.cursor-hidden { cursor: none; }
   .toggle-bar { top: 12px; right: 12px; gap: 2px; padding: 6px 8px; }
   .toggle-bar button { padding: 5px 8px; font-size: 12px; }
 }
+
+/* ============================================================
+   INTRO / HELP OVERLAY  (src/startup-popup.js)
+   ============================================================ */
+
+.intro-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 220ms ease;
+}
+.intro-overlay.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+.intro-backdrop {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, rgba(10, 10, 14, 0.72), rgba(0, 0, 0, 0.88));
+  backdrop-filter: blur(14px) saturate(130%);
+  -webkit-backdrop-filter: blur(14px) saturate(130%);
+}
+.intro-card {
+  position: relative;
+  width: min(560px, calc(100vw - 32px));
+  padding: 28px 32px 24px;
+  background: linear-gradient(180deg, rgba(30, 30, 40, 0.72), rgba(14, 14, 20, 0.82));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.6),
+    0 0 0 1px rgba(255, 255, 255, 0.04) inset;
+  color: #eee;
+  font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", sans-serif;
+  transform: translateY(8px) scale(0.98);
+  transition: transform 260ms cubic-bezier(.2,.8,.2,1);
+  outline: none;
+}
+.intro-overlay.visible .intro-card {
+  transform: translateY(0) scale(1);
+}
+.intro-brand {
+  margin-bottom: 18px;
+  text-align: center;
+}
+.intro-wordmark {
+  font-size: 28px;
+  font-weight: 300;
+  letter-spacing: 0.02em;
+  color: #fff;
+}
+.intro-subtitle {
+  margin-top: 4px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.55);
+  letter-spacing: 0.02em;
+}
+.intro-body { margin-bottom: 18px; }
+.intro-lede {
+  font-size: 14px;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.75);
+  margin: 0 0 16px 0;
+}
+.intro-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+.intro-section-label {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.4);
+  margin-bottom: 6px;
+}
+.intro-section ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 13px;
+  line-height: 1.9;
+  color: rgba(255, 255, 255, 0.82);
+}
+.intro-section li { display: flex; gap: 8px; align-items: center; }
+.intro-section kbd,
+.intro-footnote kbd {
+  display: inline-block;
+  min-width: 20px;
+  padding: 1px 6px;
+  font: 11px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 5px;
+}
+.intro-footnote {
+  margin: 4px 0 0;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.5);
+  text-align: center;
+}
+.intro-dot { margin: 0 6px; opacity: 0.5; }
+.intro-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 18px;
+}
+.intro-primary {
+  appearance: none;
+  padding: 10px 28px;
+  font: 500 14px/1 -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
+  color: #0b0b10;
+  background: linear-gradient(180deg, #fff, #e3e3e8);
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: transform 120ms ease, box-shadow 120ms ease;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+}
+.intro-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45); }
+.intro-primary:active { transform: translateY(0); }
+.intro-meta {
+  margin-top: 16px;
+  text-align: center;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.3);
+}
+
+@media (max-width: 600px) {
+  .intro-card { padding: 22px 20px 18px; }
+  .intro-grid { grid-template-columns: 1fr; gap: 10px; }
+  .intro-wordmark { font-size: 24px; }
+}
+
+/* ============================================================
+   MODE SYSTEM  (src/modes.js)
+   ============================================================ */
+
+.mode-toast {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.96);
+  z-index: 8500;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 14px 28px;
+  background: rgba(14, 14, 20, 0.78);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  color: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 180ms ease, transform 220ms cubic-bezier(.2,.8,.2,1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+.mode-toast.visible { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+.mode-toast-label {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+}
+.mode-toast-value {
+  font-size: 22px;
+  font-weight: 300;
+  letter-spacing: 0.04em;
+}
+.mode-toast-tagline {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.55);
+  margin-top: 2px;
+}
+
+/* Mode-tinted accent on <html data-mode="..."> — subtle chrome shift */
+html[data-mode="ambient"] { --er-accent: hsl(200, 60%, 70%); }
+html[data-mode="focus"]   { --er-accent: hsl(150, 40%, 70%); }
+html[data-mode="rave"]    { --er-accent: hsl(320, 70%, 70%); }
+
+/* ============================================================
+   RESIZE HANDLE  (on .album-card)
+   ============================================================ */
+
+.card-resize-handle {
+  position: absolute;
+  right: 4px;
+  bottom: 4px;
+  width: 16px;
+  height: 16px;
+  cursor: nwse-resize;
+  opacity: 0;
+  transition: opacity 180ms ease;
+  /* diagonal stripes as visual affordance */
+  background:
+    linear-gradient(135deg,
+      transparent 0, transparent 40%,
+      rgba(255,255,255,0.45) 40%, rgba(255,255,255,0.45) 50%,
+      transparent 50%, transparent 65%,
+      rgba(255,255,255,0.3) 65%, rgba(255,255,255,0.3) 75%,
+      transparent 75%);
+  border-bottom-right-radius: 14px;
+  pointer-events: auto;
+  z-index: 2;
+}
+.album-card:hover .card-resize-handle,
+.album-card:focus-within .card-resize-handle,
+.album-card.picked-up .card-resize-handle { opacity: 1; }
+.album-card.resizing { cursor: nwse-resize; }
+
+/* ============================================================
+   REDUCED-MOTION EXTENSIONS
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .intro-overlay,
+  .intro-card,
+  .mode-toast { transition: opacity 80ms linear; transform: none !important; }
+  .intro-overlay.visible .intro-card { transform: none; }
+}
