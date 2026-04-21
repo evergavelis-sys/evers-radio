@@ -16,7 +16,7 @@
 // All security relies on the redirect-URI whitelist above.
 
 window.CONFIG = {
-    SPOTIFY_CLIENT_ID: 'PASTE_CLIENT_ID_HERE',
+    SPOTIFY_CLIENT_ID: '0c9dbd7cb5bd4b13ade1a4f3899af292',
 
     REDIRECT_URIS: {
       prod:  'https://evergavelis-sys.github.io/evers-radio/',
