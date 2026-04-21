@@ -141,6 +141,30 @@ body.cursor-hidden { cursor: none; }
      transition: none; /* no opacity transition while wrestling with it */
 }
 
+.album-card.picked-up {
+     cursor: grabbing;
+     box-shadow:
+       var(--shadow-lift),
+       0 0 0 1px rgba(255, 255, 255, 0.04),
+            0 0 48px -4px var(--accent),
+            0 24px 60px rgba(0, 0, 0, 0.65);
+     filter: brightness(1.04);
+}
+
+/* Focus ring for keyboard users — respects brand accent. */
+.album-card:focus-visible {
+     outline: 2px solid var(--accent);
+     outline-offset: 4px;
+}
+
+/* Accessibility: respect OS-level "reduce motion" setting. */
+@media (prefers-reduced-motion: reduce) {
+     .album-card {
+            transition: none;
+     }
+}
+
+
 
 .album-art-wrap {
   width: 100%;
