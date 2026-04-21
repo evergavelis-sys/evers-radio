@@ -119,19 +119,28 @@ body.cursor-hidden { cursor: none; }
   box-shadow: var(--shadow-lift), 0 0 0 1px rgba(255, 255, 255, 0.02), 0 0 24px -4px var(--accent);
   z-index: 20;
   opacity: 0;
-  transform: translateY(8px);
-  transition: opacity var(--album-fade, 500ms) ease, transform var(--album-fade, 500ms) ease;
-  pointer-events: none;
+  /* Transform is owned by card-physics.js; keep opacity transition for fade-in only. */
+  transition: opacity var(--album-fade, 500ms) ease;
+  pointer-events: auto;
+  cursor: grab;
+  touch-action: none;
+  will-change: transform;
+  user-select: none;
 }
 
 .album-card.visible {
   opacity: 1;
-  transform: translateY(0);
 }
 
 .album-card.faded {
   opacity: 0.3;
 }
+
+.album-card.grabbing {
+     cursor: grabbing;
+     transition: none; /* no opacity transition while wrestling with it */
+}
+
 
 .album-art-wrap {
   width: 100%;
