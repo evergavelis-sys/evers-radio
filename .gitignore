@@ -1,5 +1,6 @@
-# Local secrets — Spotify Client ID lives here, never commit
-config.js
+# Spotify Client ID lives in config.js. With PKCE there is no client secret,
+# so the Client ID is committed in plain text (it is sent in the auth URL anyway).
+# Security relies on the redirect URI whitelist in the Spotify developer dashboard.
 
 # macOS noise
 .DS_Store
